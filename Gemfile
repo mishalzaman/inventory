@@ -20,6 +20,7 @@ gem 'bootstrap', '~> 4.2.1'
 gem 'jquery-rails'
 gem "react_on_rails", "11.0.0"
 gem "webpacker", "~> 3"
+
 gem 'mini_racer', platforms: :ruby
 
 # Use CoffeeScript for .coffee assets and views

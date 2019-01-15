@@ -15,7 +15,7 @@ class ItemController < ApplicationController
   end
 
   def get_items
-    items = Item.where({user_id: params[:user_id]})
+    items = Item.where({user_id: params[:user_id]}).order(state: :desc)
 
     render :json => {items: items}
   end

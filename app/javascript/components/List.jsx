@@ -26,28 +26,50 @@ export default class List extends React.Component {
       return response.json();
     }).then(data => {
       this.setState({
-        items: data
+        items: data.items
       })
     }).catch(err => {
       console.log('error: ', err);
     });
   }
 
+  renderItems() {
+    if (this.state.items == null) {
+      return null
+    }
+
+    return (
+      <div>
+      {
+        this.state.items.map((i) => {
+          return <Item
+            key={i.id}
+            name={i.name}
+            state={i.state}
+            user_id={this.props.user_id}
+            csrf_token={this.props.csrf_token}
+            />
+        })
+      }
+      </div>
+    )
+  }
+
+  update = () => {
+    this.get_items();
+  }
+
   render() {
+    console.log(this.state.items);
+
     return(
       <div>
         <Create
+          onCreate={this.update}
           user_id={this.props.user_id}
           csrf_token={this.props.csrf_token}
         />
-        {this.state.items &&
-          <Item
-          name={"test name"}
-          state={0} 
-          user_id={this.props.user_id}
-          csrf_token={this.props.csrf_token}
-          />
-        }
+        {this.renderItems()}
       </div>
     )
   }

@@ -40,8 +40,17 @@ export default class Create extends React.Component {
       credentials: 'same-origin'
     }).then(function(response) {
       return response.json();
+    }).then(data => {
+      this.update(data);
+    }).catch(err => {
+      console.log('error: ', err);
     });
     this.toggleForm();
+  }
+
+  update = (data) => {
+    console.log('/item/add data: ', data);
+    this.props.onCreate();
   }
   
   form() {
@@ -50,12 +59,12 @@ export default class Create extends React.Component {
         <div className={"input-group"}>
           <input type={"text"} className={"form-control"} id={"newItemName"} aria-label={"Text input with dropdown button"} placeholder={"item name"}/>
           <div className={"input-group-append"}>
-            <button className={"btn btn-outline-secondary dropdown-toggle"} type={"button"} data-toggle={"dropdown"} aria-haspopup={"true"} aria-expanded={"false"}>Dropdown</button>
+            <button className={"btn btn-outline-secondary dropdown-toggle"} type={"button"} data-toggle={"dropdown"} aria-haspopup={"true"} aria-expanded={"false"}>Create</button>
             <div className={"dropdown-menu"}>
               <ul>
-                <li className={"dropdown-item"} onClick={() => this.addItem(2)}>In stock</li>
+                <li className={"dropdown-item"} onClick={() => this.addItem(0)}>In stock</li>
                 <li className={"dropdown-item"} onClick={() => this.addItem(1)}>Running out</li>
-                <li className={"dropdown-item"} onClick={() => this.addItem(0)}>Out of stock</li>
+                <li className={"dropdown-item"} onClick={() => this.addItem(2)}>Out of stock</li>
               </ul>
               <div role={"separator"} className={"dropdown-divider"}></div>
               <a className={"dropdown-item"} href={"#"}>Cancel</a>
@@ -78,8 +87,9 @@ export default class Create extends React.Component {
     return (
       <div className={"container"}>
         {
-          this.state.showForm ?
-          this.form() : this.addNewButton()
+          this.state.showForm
+          ? this.form()
+          : this.addNewButton()
         }
       </div>
     );
@@ -88,5 +98,6 @@ export default class Create extends React.Component {
 
 Create.propTypes = {
   user_id: PropTypes.number.isRequired,
-  csrf_token: PropTypes.string.isRequired
+  csrf_token: PropTypes.string.isRequired,
+  onCreate: PropTypes.func.isRequired
 };
